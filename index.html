@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+</head>
+<body>
+  <h1>Weather App</h1>
+  <input type="text" id="cityInput" placeholder="Enter city name" />
+  <button id="getWeather">Get Weather</button>
+  <p id="weatherResult"></p>
+
+  <script>
+    document.getElementById("getWeather").addEventListener("click", async () => {
+      const city = document.getElementById("cityInput").value;
+      if (!city) {
+        alert("Please enter a city name!");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:3000/weather?city=${city}`);
+        if (!response.ok) throw new Error("Failed to fetch weather data");
+        const data = await response.json();
+        document.getElementById("weatherResult").textContent =
+          `Temperature in ${city}: ${data.temperature}°C, ${data.description}`;
+      } catch (error) {
+        document.getElementById("weatherResult").textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>
